@@ -1,0 +1,97 @@
+# FIFA-2026-World-Cup-Predictor
+# 2026 FIFA World Cup Team Predictor & Simulator
+
+A premium, interactive, and beautiful single-page web application that allows users to predict and simulate the 2026 FIFA World Cup, featuring the new 48-team format with 12 groups, Round of 32 knockout bracket, adjustable simulation models, match commentary generator, and sharing capabilities.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The 2026 FIFA World Cup uses a new format of **48 teams** divided into **12 groups of 4**.
+> The top 2 teams from each group, plus the **8 best third-placed teams**, advance to the Round of 32.
+> Our simulation engine will dynamically compute this complex calculation to rank the third-placed teams.
+
+> [!TIP]
+> The app will be created in a new subdirectory inside the default scratch directory: `C:\Users\User\.gemini\antigravity\scratch\fifa-2026-predictor`. 
+> We recommend configuring your editor or workspace to point to this directory once created.
+
+## Open Questions
+- None at this moment. The current format and qualified team lists are well-defined.
+
+## Proposed Changes
+
+We will create a standalone client-side web application using HTML5, CSS3, and modern Javascript. 
+
+```
+fifa-2026-predictor/
+├── index.html       # Single Page Application UI structure
+├── style.css        # Premium styling: deep purple/blue gradient theme, glassmorphism, custom scrollbars, animations
+├── teams.js         # 48-team database with stats, groups, star players, and confederations
+└── app.js           # Simulation engine, tournament logic (12 groups -> 8 best 3rds -> bracket advancement), state management, share feature
+```
+
+---
+
+### UI/UX Design System (`style.css`)
+- **Theme**: Dark luxury soccer arena theme.
+  - Background: Deep indigo/violet `#0f0c20` transitioning to dark navy `#060411` with a subtle grid overlay.
+  - Accents: Neon cyan `#00f2fe` (technology, speed), bright gold `#ffd700` (trophy, victory), and neon green `#39ff14` (the pitch).
+- **Glassmorphism**: Glass cards with `backdrop-filter: blur(12px) saturate(180%)`, border `1px solid rgba(255,255,255,0.08)`, and subtle drop shadows.
+- **Animations**:
+  - Confetti burst on tournament completion (Canvas-based).
+  - Smooth card-flipping and list transitions for group standings.
+  - Pulsing glowing states for matches currently being simulated.
+- **Responsive Layout**: Designed as a modern desktop dashboard with responsive adjustments for tablets and mobile devices.
+
+---
+
+### Tournament Engine & Core Logic (`app.js`, `teams.js`)
+1. **Team Database (`teams.js`)**:
+   - Contains all 48 teams mapped to groups A to L.
+   - Team stats: Offense Rating (1-99), Defense Rating (1-99), Midfield/Control Rating (1-99), Star Player Name, and Flag Emoji.
+2. **Simulation Algorithm**:
+   - Uses Poisson-like probability distribution or weighted random goals based on Offense vs. opposing Defense ratings.
+   - Standard Match: Generates score `G1 : G2` and generates text-based event commentary (goals, yellow/red cards, injury time) for selected matches.
+   - Knockout Stage: Handles Extra Time (30 mins) and Penalty Shootouts if tied.
+3. **Group Stage Resolution**:
+   - Computes standings: Points, Goal Difference, Goals Scored, Head-to-Head, and Fair Play.
+   - Computes Best 3rd-Place Ranking: Compiles the 3rd-place teams from all 12 groups, ranks them, and takes the top 8 to advance.
+4. **Knockout Bracket Generation**:
+   - Seeds the Round of 32 dynamically based on official FIFA scheduling logic (e.g., Group winners vs 3rd-place or runners-up).
+   - Allows users to click on a matchup to manually pick a winner, or click "Quick Simulate Match", or "Simulate All" for the round.
+
+---
+
+### Component Details
+
+#### [NEW] [index.html](file:///C:/Users/User/.gemini/antigravity/scratch/fifa-2026-predictor/index.html)
+- Interactive layout with 4 core views (tabs):
+  1. **Dashboard & Settings**: Adjust tournament simulation parameters (Upsets probability, High-scoring bias, Home advantage for USA/MEX/CAN).
+  2. **Group Stage**: 12 groups rendered in grid cards. Clicking a group zooms into it to show fixtures and match stats.
+  3. **Knockout Stage**: Zoomable/scrollable bracket tree (R32 -> R16 -> QF -> SF -> Final) with connecting lines.
+  4. **Stats & Trophy**: Displays the Champion celebration, Golden Boot winner prediction, and team rankings.
+
+#### [NEW] [style.css](file:///C:/Users/User/.gemini/antigravity/scratch/fifa-2026-predictor/style.css)
+- Custom-made CSS variables for the color palette.
+- Flexbox and CSS Grid setups for the groups grid and knockout bracket tree.
+- Custom styling for bracket connector lines to keep them looking clean and modern.
+- Interactive hover effects for team rows (highlighting team's pathway).
+
+#### [NEW] [teams.js](file:///C:/Users/User/.gemini/antigravity/scratch/fifa-2026-predictor/teams.js)
+- Array of 48 team objects grouped from A to L.
+- Includes historical stats and realistic ratings based on recent performance.
+
+#### [NEW] [app.js](file:///C:/Users/User/.gemini/antigravity/scratch/fifa-2026-predictor/app.js)
+- Interactive handlers for all tabs, simulation flow, tie-breaker solvers, bracket rendering, and generating custom reports.
+
+## Verification Plan
+
+### Automated/Code Verification
+- Validate the logic of finding the 8 best 3rd-placed teams (ensuring correct sorting: Points > GD > Goals > Fair Play).
+- Validate knockout matchmaking ensuring that 3rd-placed teams do not play teams from their own group in the Round of 32 where possible.
+- Run the simulation 10,000 times in memory to verify there are no crashes, undefined values, or invalid match outcomes (no draws in knockouts).
+
+### Manual Verification
+- Render the page locally.
+- Test simulating a single match, a single group, the entire group stage, and the whole tournament.
+- Verify bracket navigation on mobile and desktop.
+- Verify champion modal confetti effect.
